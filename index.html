@@ -6,6 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+    token: "115d48a52c3341b684e90e4200343ade"
+    // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
 
   <style>
     button {
@@ -88,6 +95,11 @@
   </main>
 
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "115d48a52c3341b684e90e4200343ade"
+    // for more configuration options, see https://docs.trackjs.com
+    });
+    TrackJS.track('Testing TrackJS!');           
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +107,105 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch(err) {
+        alert(err);
+      }
+      finally {
+        alert('try again');
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    class SyntacticalError extends Error {
+      constructor(message) {
+      super(message);
+      this.name = "SyntacticalError";
+      }
+    }
+
+    errorBtns[0].addEventListener('click', e => {
+      console.log('This is console log');
+    });
+    errorBtns[1].addEventListener('click', e => {
+      console.error('This is console error');
+    });
+    errorBtns[2].addEventListener('click', e => {
+      console.count('console count demo');
+    });
+    errorBtns[3].addEventListener('click', e => {
+      console.warn('I am warning you with Peace and Love');
+    });
+    const number = 2;
+    const y = 3;
+    const errorMessage = 'the number does not equal 3';
+    errorBtns[4].addEventListener('click', e => {
+      console.assert(number == y, {number, errorMessage});
+    });
+    errorBtns[5].addEventListener('click', e => {
+      console.clear();
+    });
+
+    errorBtns[6].addEventListener('click', e => {
+      console.dir(errorBtns[0]);
+    });
+
+    errorBtns[7].addEventListener('click', e => {
+      console.dirxml(document.body);
+    });
+
+    errorBtns[8].addEventListener('click', e => {
+      console.group('lookin at a groupin of console');
+    });
+
+    errorBtns[9].addEventListener('click', e => {
+      console.groupEnd('lookin at a groupin of console');
+    });
+
+    errorBtns[10].addEventListener('click', e => {
+      console.table(errorBtns);
+    });
+
+    errorBtns[11].addEventListener('click', e => {
+      console.time();
+    });
+
+    errorBtns[12].addEventListener('click', e => {
+      console.timeEnd();
+    });
+    // outputs a stack trace
+    errorBtns[13].addEventListener('click', e => {
+      const firstCall = () => { second(); };
+      const second = () => { third(); };
+      const third = () => { console.trace(); };
+      firstCall();
+    });
+
+    errorBtns[14].addEventListener('click', e => {
+      boom;
+    });
+    window.onerror = function () {
+      console.log('sadly an error occured');
+    };
+
+    let json = '{"name":"John"}';
+    try {
+      let user = JSON.parse(json);
+      if (!user.field) {
+        throw new SyntacticalError("Incomplete data: no field");
+      }
+    } 
+    catch (err) {
+      alert( "JSON Error: " + err.message );
+    }
+    finally {
+      alert('That ok! test these buttons');
+    }
   </script>
 </body>
 
